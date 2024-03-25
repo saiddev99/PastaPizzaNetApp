@@ -1,41 +1,47 @@
-﻿using PastaPizzaNetUI.Models.GerechtModel.Enums;
+﻿using PastaPizzaNetUI.Models.DessertModel.Enums;
+using PastaPizzaNetUI.Models.GerechtModel.Enums;
+using System.Text;
 
 namespace PastaPizzaNetUI.Models.GerechtModel
 {
-    internal class BesteldGerecht
+    internal class BesteldGerecht:IBedrag
     {
-        private Grootte? grootte;
-        private Extra[]? extra;
-
         public Gerecht? Gerecht { get; set; }
-        public Grootte? Grootte
-        {
-            get
-            {
-                return grootte;
-            }
+        public Grootte? Grootte{ get; set; }
+        public Extra[]? Extra{ get; set; }
+        public decimal TotalePrijs { get;private set; }
 
-            set
+        public string BerekenBedrag()
+        {
+            decimal extraPrijs = 0.00M;
+            StringBuilder extras = new();
+            StringBuilder text = new();
+
+            Pizza? pizza = Gerecht as Pizza;
+            Pasta? pasta = Gerecht as Pasta;
+
+            extraPrijs += Extra.Length;
+            extraPrijs += Grootte.Value == Enums.Grootte.Groot ? 3.00M : 0.00M;
+            TotalePrijs = Gerecht.Prijs + extraPrijs;
+
+            if (Gerecht is Pizza)
             {
-                grootte = value;
-                if (value == Enums.Grootte.Groot)
+                foreach (var item in pizza.Onderdelen)
                 {
-                    Gerecht.Prijs += 3M;
+                    text.Append(item + " ");
                 }
             }
-        }
-        public Extra[]? Extra
-        {
-            get
+            else
             {
-                return extra;
+                text.Append(pasta.Omschrijving);
             }
 
-            set
+            foreach (var item in Extra)
             {
-                extra = value;
-                Gerecht.Prijs += extra.Length;
+                extras.Append(item + " ");
             }
+
+            return $"Gerecht: {Gerecht.Naam} ({Gerecht.Prijs} euro) {text}({Grootte}) extra: {extras}(bedrag: {TotalePrijs} euro)";
         }
     }
 }

@@ -7,10 +7,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\DessertModel\" />
-    <Folder Include="Models\KlantModel\" />
-    <Folder Include="Models\BestellingModel\" />
-  </ItemGroup>
-
 </Project>

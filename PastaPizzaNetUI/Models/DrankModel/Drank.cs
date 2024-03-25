@@ -1,25 +1,20 @@
-﻿using PastaPizzaNetUI.Models.DrankModel.Enums;
+﻿using PastaPizzaNetUI.Models.DessertModel.Enums;
+using PastaPizzaNetUI.Models.DrankModel.Enums;
 namespace PastaPizzaNetUI.Models.DrankModel
 {
-    internal class Drank
+    internal abstract class Drank: IBedrag
     {
-        private DrankEnum drankEnum;
-
-        public DrankEnum DrankEnum
-        {
-            get
-            {
-                return drankEnum;
-            }
-
-            set
-            {
-                if (!Enum.IsDefined(typeof(DrankEnum), value)) 
-                {
-                    throw new ArgumentException("Foutieve invoer, probeer opnieuw");
-                }
-            }
-        }
+        public DrankEnum DrankEnum { get; set; }
         public decimal Prijs { get; protected set;}
+
+        public Drank(DrankEnum drankEnum)
+        {
+            DrankEnum = drankEnum;
+        }
+
+        public string BerekenBedrag()
+        {
+            return $"Drank: {DrankEnum} ({Prijs} euro)";
+        }
     }
 }
