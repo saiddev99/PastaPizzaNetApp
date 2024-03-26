@@ -12,9 +12,11 @@ namespace PastaPizzaNetUI.Models.DrankModel
             DrankEnum = drankEnum;
         }
 
-        public string BerekenBedrag()
+        public abstract void BerekenBedrag();
+
+        public override string ToString()
         {
-            return $"Drank: {DrankEnum} ({Prijs} euro)";
+            return $"Drank: {DrankEnum} ({Prijs} euro)\n";
         }
     }
 }

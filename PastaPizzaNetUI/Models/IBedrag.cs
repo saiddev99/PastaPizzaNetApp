@@ -8,6 +8,6 @@ namespace PastaPizzaNetUI.Models
 {
     internal interface IBedrag
     {
-        string BerekenBedrag();
+        void BerekenBedrag();
     }
 }

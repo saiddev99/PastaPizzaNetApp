@@ -8,7 +8,7 @@ namespace PastaPizzaNetUI.Models.BestellingModel
 {
     internal class Bestelling:IBedrag
     {
-        public static int Bestelnummer { get; private set; } = 0;
+        public int Bestelnummer { get; set; }
         public int Aantal { get; set; }    
 
         public BesteldGerecht? BesteldGerecht { get; set; }
@@ -16,16 +16,37 @@ namespace PastaPizzaNetUI.Models.BestellingModel
         public Drank? Drank { get; set; }
         public Klant? Klant { get; set; }
 
-        public string BerekenBedrag()
-        {
 
-               return $"Bestelling: {++Bestelnummer}" +
-                    $"\nKlant: {Klant?.Naam??"Onbekende Klant"}" +
-                    $"\n{BesteldGerecht.BerekenBedrag()}" +
-                    $"\n{Drank.BerekenBedrag()}" +
-                    $"\n{Dessert.BerekenBedrag()}" +
-                    $"\nAantal: {Aantal}" +
-                    $"\nBedrag van deze bestelling: {(BesteldGerecht.TotalePrijs + Dessert.Prijs + Drank.Prijs) * Aantal} euro.\n";
+        public decimal TotalePrijs { get;private set; }
+        public void BerekenBedrag()
+        {
+            BesteldGerecht?.BerekenBedrag();
+            Drank?.BerekenBedrag();
+            Dessert?.BerekenBedrag();
+
+            if (BesteldGerecht is null || Drank is null || Dessert is null)
+            {
+                decimal nullBesteldGerecht = BesteldGerecht?.TotalePrijs ?? 0;
+                decimal nullDessert = Dessert?.Prijs ?? 0;
+                decimal nullDrank = Drank?.Prijs ?? 0;
+
+                TotalePrijs = (nullBesteldGerecht + nullDessert + nullDrank) * Aantal;
+            }
+            else
+            {
+                TotalePrijs = ((BesteldGerecht.TotalePrijs + Dessert.Prijs + Drank.Prijs) * Aantal) * 0.90M;
+            }
+        }
+
+        public override string ToString()
+        {
+            return $"Bestelling: {Bestelnummer}\n" +
+                    $"{Klant}" +
+                    $"{BesteldGerecht}" +
+                    $"{Drank}" +
+                    $"{Dessert}" +
+                    $"Aantal: {Aantal}\n" +
+                    $"Bedrag van deze bestelling: {Math.Round(TotalePrijs,2)} euro.";
         }
     }
 }

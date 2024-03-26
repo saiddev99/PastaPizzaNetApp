@@ -15,8 +15,11 @@ namespace PastaPizzaNetUI.Models.DessertModel
         public Dessert(DessertEnum dessertEnum)
         {
             DessertEnum = dessertEnum;
+        }
 
-            Prijs = dessertEnum switch
+        public void BerekenBedrag()
+        {
+            Prijs = DessertEnum switch
             {
                 DessertEnum.Cake => 2.00M,
                 DessertEnum.Ijs => 3.00M,
@@ -25,9 +28,9 @@ namespace PastaPizzaNetUI.Models.DessertModel
             };
         }
 
-        public string BerekenBedrag()
+        public override string ToString()
         {
-            return $"Dessert: {DessertEnum} ({Prijs} euro)";
+            return $"Dessert: {DessertEnum} ({Prijs} euro)\n";
         }
     }
 }

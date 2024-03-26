@@ -11,12 +11,15 @@ namespace PastaPizzaNetUI.Models.DrankModel
     {
         public Frisdrank(DrankEnum drankEnum) : base(drankEnum)
         {
-            base.Prijs = 2.00M;
-
             if (drankEnum != DrankEnum.Water && drankEnum != DrankEnum.Limonade && drankEnum != DrankEnum.Cocacola)
             {
                 throw new ArgumentException("Deze drank behoort bij warmedranken");
             }
+        }
+
+        public override void BerekenBedrag()
+        {
+            base.Prijs = 2.00M;
         }
     }
 }

@@ -8,6 +8,6 @@ namespace PastaPizzaNetUI.Models.GerechtModel.Enums
 {
     internal enum Extra
     {
-        Kaas, Tomaten, Saus
+        Kaas, Tomaten, Look
     }
 }

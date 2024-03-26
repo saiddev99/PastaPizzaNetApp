@@ -8,7 +8,13 @@ namespace PastaPizzaNetUI.Models.KlantModel
 {
     internal class Klant
     {
+
         public int KlantId { get; set; }
         public string? Naam { get; set; }
+
+        public override string ToString()
+        {
+            return $"Klant: {Naam ?? "Onbekende Klant"}\n";
+        }
     }
 }

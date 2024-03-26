@@ -1,6 +1,7 @@
 ﻿using PastaPizzaNetUI.Models.DessertModel.Enums;
 using PastaPizzaNetUI.Models.GerechtModel.Enums;
 using System.Text;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace PastaPizzaNetUI.Models.GerechtModel
 {
@@ -9,18 +10,19 @@ namespace PastaPizzaNetUI.Models.GerechtModel
         public Gerecht? Gerecht { get; set; }
         public Grootte? Grootte{ get; set; }
         public Extra[]? Extra{ get; set; }
+
         public decimal TotalePrijs { get;private set; }
 
-        public string BerekenBedrag()
-        {
-            decimal extraPrijs = 0.00M;
-            StringBuilder extras = new();
-            StringBuilder text = new();
+        private decimal extraPrijs = 0.00M;
+        private StringBuilder extras = new();
+        private StringBuilder text = new();
 
+        public void BerekenBedrag()
+        {
             Pizza? pizza = Gerecht as Pizza;
             Pasta? pasta = Gerecht as Pasta;
 
-            extraPrijs += Extra.Length;
+            extraPrijs += Extra?.Length??0;
             extraPrijs += Grootte.Value == Enums.Grootte.Groot ? 3.00M : 0.00M;
             TotalePrijs = Gerecht.Prijs + extraPrijs;
 
@@ -36,12 +38,27 @@ namespace PastaPizzaNetUI.Models.GerechtModel
                 text.Append(pasta.Omschrijving);
             }
 
-            foreach (var item in Extra)
+            if (Extra is not null)
             {
-                extras.Append(item + " ");
+                foreach (var item in Extra)
+                {
+                    extras.Append(item + " ");
+                }
             }
 
-            return $"Gerecht: {Gerecht.Naam} ({Gerecht.Prijs} euro) {text}({Grootte}) extra: {extras}(bedrag: {TotalePrijs} euro)";
+        }
+
+        public override string ToString()
+        {
+            if (Extra is not null)
+            {
+                return $"Gerecht: {Gerecht.Naam} ({Gerecht.Prijs} euro) {text}({Grootte}) extra: {extras}(bedrag: {TotalePrijs} euro)\n";
+            }
+            else
+            {
+                return $"Gerecht: {Gerecht.Naam} ({Gerecht.Prijs} euro) {text}({Grootte}) (bedrag: {TotalePrijs} euro)\n";
+            }
+            
         }
     }
 }
